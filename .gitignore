@@ -22,10 +22,11 @@ Thumbs.db
 # Logs
 *.log
 
-# Environment variables
+# Environment variables (SECURITY CRITICAL)
 .env
 .env.local
 .env.production
+.env.development
 
 # TON specific
 *.fif

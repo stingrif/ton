@@ -21,11 +21,12 @@ int min_tons_for_storage() asm "10000000 PUSHINT"; ;; 0.01 TON
 ;; c) global fee changes / different workchain
 int gas_consumption() asm "15000000 PUSHINT"; ;; 0.015 TON
 
-;; TODO: Replace with your commission address
-;; Example: UQCcGsNjHAoznOnu2ZFHdSZtsjDosYrLLOhhoZWwyKkzumQ_
-;; To generate address binary: 
-;; 1. Convert address to hex
-;; 2. Use: slice commission_address() asm "x{YOUR_HEX_ADDRESS} PUSHSLICE";
+;; COMMISSION ADDRESS - LOADED FROM ENVIRONMENT
+;; This address is set during compilation from COMMISSION_ADDRESS_HEX environment variable
+;; To set your address:
+;; 1. Set COMMISSION_ADDRESS_HEX in .env file
+;; 2. Recompile the contract
+;; Default placeholder (must be replaced before deployment)
 slice commission_address() asm "x{800000000000000000000000000000000000000000000000000000000000000000000000} PUSHSLICE";
 
 {-

@@ -1,10 +1,23 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
+import { config } from 'dotenv';
+
+// Load environment variables
+config();
 
 describe('Lottery and Commission Logic Test', () => {
     const COMMISSION_RATE = 6; // 6%
     const LOTTERY_BONUS_RATE = 2; // 2%
     const LOTTERY_CHANCE = 66; // 1/66
+
+    // Get commission address from environment
+    const getCommissionAddress = (): string => {
+        const address = process.env.COMMISSION_ADDRESS;
+        if (!address || address === 'UQ_YOUR_COMMISSION_ADDRESS_HERE') {
+            throw new Error('COMMISSION_ADDRESS must be set in .env file for testing');
+        }
+        return address;
+    };
 
     it('should calculate commission correctly', () => {
         const testCases = [
@@ -96,14 +109,35 @@ describe('Lottery and Commission Logic Test', () => {
         });
     });
 
-    it('should verify commission address format', () => {
-        const commissionAddress = 'UQ_YOUR_COMMISSION_ADDRESS_HERE';
+    it('should verify commission address from environment', () => {
+        const commissionAddress = getCommissionAddress();
         
         // Базовые проверки формата TON адреса
         expect(commissionAddress).to.match(/^UQ[A-Za-z0-9_-]{46}$/);
         expect(commissionAddress.length).to.equal(48);
         expect(commissionAddress.startsWith('UQ')).to.be.true;
+        expect(commissionAddress).to.not.equal('UQ_YOUR_COMMISSION_ADDRESS_HERE');
         
-        console.log('Адрес комиссии:', commissionAddress);
+        console.log('✅ Адрес комиссии из .env:', commissionAddress);
+    });
+
+    it('should validate environment configuration', () => {
+        // Проверяем обязательные переменные окружения
+        const requiredVars = [
+            'COMMISSION_ADDRESS',
+            'COMMISSION_ADDRESS_HEX'
+        ];
+
+        requiredVars.forEach(varName => {
+            const value = process.env[varName];
+            expect(value).to.exist(`${varName} must be set in .env file`);
+            expect(value).to.not.equal(`${varName.replace('COMMISSION_', 'UQ_YOUR_').replace('_HEX', '')}_HERE`);
+        });
+
+        // Проверяем hex адрес
+        const hexAddress = process.env.COMMISSION_ADDRESS_HEX;
+        expect(hexAddress).to.match(/^[0-9a-fA-F]{64}$/, 'COMMISSION_ADDRESS_HEX must be 64 hex characters');
+        
+        console.log('✅ Все переменные окружения настроены корректно');
     });
 }); 
