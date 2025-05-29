@@ -1,9 +1,10 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { config } from 'dotenv';
+import path from 'path';
 
-// Load environment variables
-config();
+// Load environment variables from parent directory
+config({ path: path.join(__dirname, '..', '.env') });
 
 describe('Lottery and Commission Logic Test', () => {
     const COMMISSION_RATE = 6; // 6%

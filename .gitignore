@@ -24,14 +24,28 @@ Thumbs.db
 
 # Environment variables (SECURITY CRITICAL)
 .env
-.env.local
-.env.production
-.env.development
+.env.*
+!.env.example
 
 # TON specific
 *.fif
 *.boc
 *.pk
+*.addr
+*.key
+
+# Wallet and keys (SECURITY CRITICAL)
+*mnemonic*
+*private*
+*secret*
+*wallet*
+*.wallet
+*.keys
+
+# Personal data
+*personal*
+*config.local*
+*local.json
 
 # Test coverage
 coverage/
